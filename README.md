@@ -3,7 +3,8 @@
 ![Versão](https://img.shields.io/badge/version-2.0.0-f97316?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-Em_Desenvolvimento-0b2c4d?style=for-the-badge)
 
-**🔗 Aplicação Online:** [https://terminal-yms-ws.vercel.app/](https://operacoes-estaleiro.vercel.app/)
+**🔗 Aplicação Online:** [https://operacoes-estaleiro.vercel.app/]
+**Link Make**
 
 ---
 
@@ -24,7 +25,7 @@ O **Projeto Operaçoes do estaleiro** é a evolução do sistema de gestão de c
 
 ```mermaid
 graph TD
-    A[GATILHO: Chegada do ] --> B(Frontend: Next.js/Shadcn)
+    A[GATILHO: Chegada do pdf] --> B(Frontend: Next.js/Shadcn)
     B -->|Webhook| C(Make.com: Webhook Gateway)
     C -->|Consulta| D(Google Sheets: Estado da Matriz)
     D -->|Payload| E(Motor IA: Gemini Pro 1.5)
@@ -56,7 +57,7 @@ graph TD
 1. **Clone o repositório:**
 
 ```bash
-git clone https://github.com/Eduardo377/torre-controle-logistico-com-automacao_desafio-2
+git clone https://github.com/joaosilvateixeira33/shipyard-sync-flow
 
 ```
 
@@ -114,10 +115,10 @@ Projeto desenvolvido como parte do desafio técnico da **KODIE Academy** em parc
   <img src="https://github.com/Eduardo377.png" width="120px;" alt="Foto de Eduardo Gomes Andrade" style="border-radius: 50%;"/>
 </a>
 <br />
-<strong>Eduarde Andrade</strong>
+<strong>João Marcos Silva</strong>
 <br />
 <em>Full Stack Developer</em>
 <br /><br />
-<a href="https://www.linkedin.com/in/eduardogomes377">
+<a href="https://www.linkedin.com/in/jo%C3%A3o-silva-fullstack/">
   <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
 </a>
