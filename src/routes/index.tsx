@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   Anchor,
   UploadCloud,
@@ -11,9 +11,6 @@ import {
   CheckCircle2,
   AlertTriangle,
   X,
-  PackageCheck,
-  PackageX,
-  PackageSearch,
   Ship,
 } from "lucide-react";
 
@@ -23,15 +20,6 @@ export const Route = createFileRoute("/")({
 
 // 🔗 Substitua esta URL pelo endpoint do seu webhook (Make/Zapier/n8n/etc.)
 const WEBHOOK_URL = "https://hook.us2.make.com/dtwj0j85ynzayttrmmiixld4qgj2io85";
-
-type StockStatus = "Em Estoque" | "Estoque Baixo" | "Sem Estoque";
-
-interface ReportItem {
-  partNumber: string;
-  description: string;
-  quantity: number;
-  status: StockStatus;
-}
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -70,17 +58,6 @@ function formatBytes(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
-function statusStyle(status: StockStatus) {
-  switch (status) {
-    case "Em Estoque":
-      return { icon: PackageCheck, cls: "bg-success/10 text-success ring-success/20" };
-    case "Estoque Baixo":
-      return { icon: PackageSearch, cls: "bg-warning/15 text-warning ring-warning/30" };
-    case "Sem Estoque":
-      return { icon: PackageX, cls: "bg-destructive/10 text-destructive ring-destructive/20" };
-  }
-}
-
 function Dashboard() {
   const [file, setFile] = useState<File | null>(null);
   const [email, setEmail] = useState("");
@@ -88,7 +65,6 @@ function Dashboard() {
   const [dragOver, setDragOver] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; msg: string } | null>(null);
-  const [results, setResults] = useState<ReportItem[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const emailValid = emailRegex.test(email.trim());
@@ -123,9 +99,6 @@ function Dashboard() {
     const result = await handleFormSubmit(email.trim(), file);
 
     if (result.ok) {
-      // Try to consume structured data from webhook; fall back to demo rows.
-      const parsed = parseWebhookResults(result.data);
-      setResults(parsed.length ? parsed : demoRows());
       setFeedback({
         type: "success",
         msg: "Relatório processado e enviado com sucesso.",
@@ -138,14 +111,6 @@ function Dashboard() {
     }
     setSubmitting(false);
   };
-
-  const summary = useMemo(() => {
-    const total = results.length;
-    const inStock = results.filter((r) => r.status === "Em Estoque").length;
-    const low = results.filter((r) => r.status === "Estoque Baixo").length;
-    const out = results.filter((r) => r.status === "Sem Estoque").length;
-    return { total, inStock, low, out };
-  }, [results]);
 
   const FileIcon = file?.type.startsWith("image/") ? ImageIcon : FileText;
 
@@ -193,7 +158,7 @@ function Dashboard() {
           {[
             { n: 1, t: "Enviar arquivo", d: "PDF ou imagem" },
             { n: 2, t: "Informar e-mail", d: "Destino do relatório" },
-            { n: 3, t: "Processar & enviar", d: "Ver resultados" },
+            { n: 3, t: "Processar & enviar", d: "Envio automático" },
           ].map((s) => (
             <li
               key={s.n}
@@ -367,175 +332,10 @@ function Dashboard() {
           </div>
         </form>
 
-        {/* Results */}
-        <section className="mt-10">
-          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h3 className="text-lg font-semibold tracking-tight sm:text-xl">
-                Resultado do Processamento
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Peças identificadas e status de estoque.
-              </p>
-            </div>
-            {results.length > 0 && (
-              <div className="grid grid-cols-4 gap-2 text-center">
-                {[
-                  { l: "Total", v: summary.total, c: "text-foreground" },
-                  { l: "Em estoque", v: summary.inStock, c: "text-success" },
-                  { l: "Baixo", v: summary.low, c: "text-warning" },
-                  { l: "Sem estoque", v: summary.out, c: "text-destructive" },
-                ].map((s) => (
-                  <div
-                    key={s.l}
-                    className="rounded-lg border border-border bg-card px-3 py-2 shadow-[var(--shadow-soft)]"
-                  >
-                    <p className={`text-lg font-bold ${s.c}`}>{s.v}</p>
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      {s.l}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {results.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-border bg-card/50 p-10 text-center">
-              <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-2xl bg-muted text-muted-foreground">
-                <PackageSearch className="h-6 w-6" />
-              </div>
-              <p className="text-sm font-medium">Nenhum relatório processado ainda</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Envie um documento para visualizar os resultados aqui.
-              </p>
-            </div>
-          ) : (
-            <>
-              {/* Desktop table */}
-              <div className="hidden overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] md:block">
-                <table className="w-full text-sm">
-                  <thead className="bg-secondary/60 text-xs uppercase tracking-wider text-muted-foreground">
-                    <tr>
-                      <th className="px-4 py-3 text-left">Part Number</th>
-                      <th className="px-4 py-3 text-left">Descrição</th>
-                      <th className="px-4 py-3 text-right">Quantidade</th>
-                      <th className="px-4 py-3 text-left">Status Estoque</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {results.map((r, i) => {
-                      const s = statusStyle(r.status);
-                      const Icon = s.icon;
-                      return (
-                        <tr
-                          key={`${r.partNumber}-${i}`}
-                          className="border-t border-border transition hover:bg-secondary/40"
-                        >
-                          <td className="px-4 py-3 font-mono text-xs font-semibold text-primary">
-                            {r.partNumber}
-                          </td>
-                          <td className="px-4 py-3">{r.description}</td>
-                          <td className="px-4 py-3 text-right font-medium">
-                            {r.quantity}
-                          </td>
-                          <td className="px-4 py-3">
-                            <span
-                              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${s.cls}`}
-                            >
-                              <Icon className="h-3.5 w-3.5" />
-                              {r.status}
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Mobile cards */}
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:hidden">
-                {results.map((r, i) => {
-                  const s = statusStyle(r.status);
-                  const Icon = s.icon;
-                  return (
-                    <div
-                      key={`${r.partNumber}-${i}`}
-                      className="rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-soft)]"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="font-mono text-xs font-semibold text-primary">
-                            {r.partNumber}
-                          </p>
-                          <p className="mt-1 text-sm font-medium">
-                            {r.description}
-                          </p>
-                        </div>
-                        <span
-                          className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-1 text-[11px] font-medium ring-1 ${s.cls}`}
-                        >
-                          <Icon className="h-3 w-3" />
-                          {r.status}
-                        </span>
-                      </div>
-                      <div className="mt-3 flex items-center justify-between border-t border-border pt-2 text-xs text-muted-foreground">
-                        <span>Quantidade</span>
-                        <span className="font-semibold text-foreground">
-                          {r.quantity}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          )}
-        </section>
-
         <footer className="mt-12 border-t border-border pt-6 text-center text-xs text-muted-foreground">
           © {new Date().getFullYear()} Wilson Sons · Sistema de Gestão do Estaleiro
         </footer>
       </main>
     </div>
   );
-}
-
-/* ------------- helpers ------------- */
-
-function parseWebhookResults(data: unknown): ReportItem[] {
-  if (!data) return [];
-  const arr = Array.isArray(data)
-    ? data
-    : Array.isArray((data as { items?: unknown[] })?.items)
-    ? (data as { items: unknown[] }).items
-    : Array.isArray((data as { results?: unknown[] })?.results)
-    ? (data as { results: unknown[] }).results
-    : [];
-  return arr
-    .map((raw): ReportItem | null => {
-      const o = raw as Record<string, unknown>;
-      const partNumber = String(o.partNumber ?? o.part_number ?? o.part ?? "");
-      const description = String(o.description ?? o.desc ?? "");
-      const quantity = Number(o.quantity ?? o.qty ?? 0);
-      const statusRaw = String(o.status ?? o.stockStatus ?? "").toLowerCase();
-      let status: StockStatus = "Em Estoque";
-      if (statusRaw.includes("sem") || statusRaw.includes("out")) status = "Sem Estoque";
-      else if (statusRaw.includes("baix") || statusRaw.includes("low")) status = "Estoque Baixo";
-      if (!partNumber && !description) return null;
-      return { partNumber, description, quantity, status };
-    })
-    .filter((v): v is ReportItem => v !== null);
-}
-
-function demoRows(): ReportItem[] {
-  return [
-    { partNumber: "WS-4021-A", description: "Válvula de esfera 4\" bronze naval", quantity: 12, status: "Em Estoque" },
-    { partNumber: "WS-7788-C", description: "Rolamento SKF 6208-2RS", quantity: 3, status: "Estoque Baixo" },
-    { partNumber: "WS-1102-B", description: "Chapa de aço naval AH36 8mm", quantity: 0, status: "Sem Estoque" },
-    { partNumber: "WS-3345-D", description: "Eletrodo de solda inox 3.25mm (kg)", quantity: 45, status: "Em Estoque" },
-    { partNumber: "WS-9910-E", description: "Anodo de zinco para casco 2kg", quantity: 6, status: "Estoque Baixo" },
-    { partNumber: "WS-5521-F", description: "Cabo de aço galvanizado 12mm (m)", quantity: 120, status: "Em Estoque" },
-  ];
 }
