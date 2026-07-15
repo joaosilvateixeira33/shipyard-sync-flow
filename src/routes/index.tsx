@@ -65,7 +65,6 @@ function Dashboard() {
   const [dragOver, setDragOver] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; msg: string } | null>(null);
-  const [results, setResults] = useState<ReportItem[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const emailValid = emailRegex.test(email.trim());
