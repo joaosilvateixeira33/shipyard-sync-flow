@@ -111,7 +111,7 @@ Projeto desenvolvido como parte do desafio técnico da **KODIE Academy** em parc
 ## 👨‍💻 Desenvolvido por
 
 <a href="https://www.linkedin.com/in/eduardogomes377">
-  <img src="https://github.com/Eduardo377.png" width="120px;" alt="Foto de Eduardo Gomes Andrade" style="border-radius: 50%;"/>
+  <img src="https://github.com/joaosilvateixeira33.png" width="120px;" alt="Foto de Eduardo Gomes Andrade" style="border-radius: 50%;"/>
 </a>
 <br />
 <strong>João Marcos Silva</strong>
