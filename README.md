@@ -30,8 +30,7 @@ graph TD
     C -->|Consulta| D(Google Sheets: Estado da Matriz)
     D -->|Payload| E(Motor IA: Gemini Pro 1.5)
     E -->|Decisão JSON| F{Make: Roteador Lógico}
-    F -->|Caminho A: Sucesso| G[Atualiza Sheets e UI]
-    F -->|Caminho B: Alerta| H[Notifica Operador]
+    F -->|Caminho A: Sucesso| G[Envia Email]
 
 ```
 
