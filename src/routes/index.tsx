@@ -21,15 +21,6 @@ export const Route = createFileRoute("/")({
 // 🔗 Substitua esta URL pelo endpoint do seu webhook (Make/Zapier/n8n/etc.)
 const WEBHOOK_URL = "https://hook.us2.make.com/dtwj0j85ynzayttrmmiixld4qgj2io85";
 
-type StockStatus = "Em Estoque" | "Estoque Baixo" | "Sem Estoque";
-
-interface ReportItem {
-  partNumber: string;
-  description: string;
-  quantity: number;
-  status: StockStatus;
-}
-
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const handleFormSubmit = async (
