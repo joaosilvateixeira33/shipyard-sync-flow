@@ -4,7 +4,7 @@
 ![Status](https://img.shields.io/badge/status-Em_Desenvolvimento-0b2c4d?style=for-the-badge)
 
 **🔗 Aplicação Online:** [https://operacoes-estaleiro.vercel.app/]
-**Link Make**
+**Link Make** [https://us2.make.com/public/shared-scenario/J7BbuXUVbDo/projeto]
 
 ---
 
@@ -87,7 +87,6 @@ ou
 ```bash
 pnpm dev
 ```
-
 ---
 
 ## 📝 Documentação da Automação (Backend)
@@ -97,14 +96,14 @@ O arquivo `backend/blueprint-roteirizador.json` contém a arquitetura lógica do
 - **Ajustes necessários:** Importe este JSON no seu cenário do Make.com para replicar a lógica de busca do Google Sheets e a chamada à API do Gemini.
 - **Customização:** A lógica da regra de 40% e o isolamento de cargas IMO está encapsulada no módulo `Generate a Response` (Gemini) do cenário.
 
----
+-
 
 ## 🎓 Créditos e Contexto
 
 Projeto desenvolvido como parte do desafio técnico da **KODIE Academy** em parceria com a **Wilson Sons**.
 
 - **Versão:** 2.0.0
-- **Status:** Em desenvolvimento (Refatoração de eixos para 7 andares concluída).
+- **Status:** Projeto concluido.
 
 ---
 
