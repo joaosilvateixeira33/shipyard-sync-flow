@@ -158,7 +158,7 @@ function Dashboard() {
           {[
             { n: 1, t: "Enviar arquivo", d: "PDF ou imagem" },
             { n: 2, t: "Informar e-mail", d: "Destino do relatório" },
-            { n: 3, t: "Processar & enviar", d: "Ver resultados" },
+            { n: 3, t: "Processar & enviar", d: "Envio automático" },
           ].map((s) => (
             <li
               key={s.n}
