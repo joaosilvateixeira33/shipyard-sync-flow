@@ -99,9 +99,6 @@ function Dashboard() {
     const result = await handleFormSubmit(email.trim(), file);
 
     if (result.ok) {
-      // Try to consume structured data from webhook; fall back to demo rows.
-      const parsed = parseWebhookResults(result.data);
-      setResults(parsed.length ? parsed : demoRows());
       setFeedback({
         type: "success",
         msg: "Relatório processado e enviado com sucesso.",
@@ -114,14 +111,6 @@ function Dashboard() {
     }
     setSubmitting(false);
   };
-
-  const summary = useMemo(() => {
-    const total = results.length;
-    const inStock = results.filter((r) => r.status === "Em Estoque").length;
-    const low = results.filter((r) => r.status === "Estoque Baixo").length;
-    const out = results.filter((r) => r.status === "Sem Estoque").length;
-    return { total, inStock, low, out };
-  }, [results]);
 
   const FileIcon = file?.type.startsWith("image/") ? ImageIcon : FileText;
 
