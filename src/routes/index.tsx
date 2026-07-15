@@ -58,17 +58,6 @@ function formatBytes(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
-function statusStyle(status: StockStatus) {
-  switch (status) {
-    case "Em Estoque":
-      return { icon: PackageCheck, cls: "bg-success/10 text-success ring-success/20" };
-    case "Estoque Baixo":
-      return { icon: PackageSearch, cls: "bg-warning/15 text-warning ring-warning/30" };
-    case "Sem Estoque":
-      return { icon: PackageX, cls: "bg-destructive/10 text-destructive ring-destructive/20" };
-  }
-}
-
 function Dashboard() {
   const [file, setFile] = useState<File | null>(null);
   const [email, setEmail] = useState("");
