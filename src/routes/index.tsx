@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
 });
 
 // 🔗 Substitua esta URL pelo endpoint do seu webhook (Make/Zapier/n8n/etc.)
-const WEBHOOK_URL = "https://hook.us2.make.com/dtwj0j85ynzayttrmmiixld4qgj2io85";
+const WEBHOOK_URL = "https://hook.us2.make.com/73tcn68nu3gsurei5wckbt9m3eo4v61g";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
