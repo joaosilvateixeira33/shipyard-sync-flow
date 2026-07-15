@@ -1,7 +1,7 @@
 # 🏗️ Operações do estaleiro
 
 ![Versão](https://img.shields.io/badge/version-2.0.0-f97316?style=for-the-badge)
-![Status](https://img.shields.io/badge/status-Em_Desenvolvimento-0b2c4d?style=for-the-badge)
+![Status](https://img.shields.io/badge/concluido-0b2c4d?style=for-the-badge)
 
 **🔗 Aplicação Online:** [https://operacoes-estaleiro.vercel.app/]<br>
 **Link Make** [https://us2.make.com/public/shared-scenario/J7BbuXUVbDo/projeto]
